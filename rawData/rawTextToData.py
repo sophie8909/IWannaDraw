@@ -3,6 +3,13 @@ import json
 import re
 import os
 
+# 整理所有檔案（txt, json）
+def redealFile(folderPath):
+	filepattern = r'(^[0-9]+)\.(json)|(txt)$'
+	for f in os.listdir( folderPath):
+		if re.match( filepattern, f):
+			bulidJson(f)
+
 # 取得當前最新檔案的 index
 def getIndexInFolder(folderPath):
 	filepattern = r'(^[0-9]+)\.json'
@@ -34,40 +41,65 @@ def json2DictReader(jsonFilePath):
 	設計一個把 .json 檔開啟成 DICT 的函式
 	'''
 
-
-def isTxtFile(txtFilePath):
+# 處理完全未處理過的 txt
+def dealrawTxt(txtFilePath):
 	text = txtReader(txtFilePath)
-	op = input("是否為抽講文？\n\t0. 否\n\t1. 是\n")
+	op = input("是否為抽獎文？\n\t0. 否\n\t1. 是\n2. 不人工分類\n")
 	typestr = "OTHER"
 	if op == 1:
 		typestr = "DRAW"
-	return {"TYPE": typestr,"CONTENT":text}
+	cutIndex = text.find("\n")
+	publisher = text[:cutIndex]
+	text = text[cutIndex+1:]
+	cutIndex = text.find("  · \n")
+	uploadtime = text[:cutIndex]
+	cutIndex = text.find("\n")
+	text = text[cutIndex+1:]
+	return {"TYPE": typestr, "PUBLISHER":publisher, "UPLOADTIME": uploadtime,"CONTENT":text}
+
+# 完整半處理的 json
+def dealrawJson(jsonFilePath):
+	jsonDICT = json2DictReader(jsonFilePath)
+	typestr = jsonDICT["TYPE"]
+	text = jsonDICT["CONTENT"]
+	if "PUBLISHER" not in jsonDICT:
+		cutIndex = text.find("\n")
+		publisher = text[:cutIndex]
+		text = text[cutIndex+1:]
+	else:
+		publisher = jsonDICT["PUBLISHER"]
+
+	if "UPLOADTIME" not in jsonDICT:
+		cutIndex = text.find("  · \n")
+		uploadtime = text[:cutIndex]
+		cutIndex = text.find("\n")
+		text = text[cutIndex+1:]
+	else:
+		uploadtime = jsonDICT["UPLOADTIME"]
+	print( "{}好了！！！！！！！".format(jsonFilePath))
+	return {"TYPE": typestr, "PUBLISHER":publisher, "UPLOADTIME": uploadtime,"CONTENT":text}
+
+def bulidJson(path):
+	index = getIndexInFolder("./")
+	if path.endswith(".txt"):
+		jsonDICT = dealrawTxt(path)
+		jsonFileWriter( jsonDICT, "./{}.json".format(index))
+	elif path.endswith(".json"):
+		jsonDICT = dealrawJson(path)
+		# print(jsonDICT)
+		jsonFileWriter( jsonDICT, path)
+	return
 
 if __name__ == '__main__':
-	index = getIndexInFolder("./")
-	# print(index)
-	path = "./input.json"
-	inputSTR = txtReader(path)
-	for i in range(len(inputSTR)):
-		if inputSTR[i] == " ":
-			if re.match( r"\}\,\{", inputSTR[i-1:i+2]):
-				inputSTR = inputSTR[0:i-1] + '\n' + inputSTR[i+1:]
-	print(inputSTR)
-	'''	
-	# while True:
-		# op = input("檔案類型：\n\t0. txt\n\t1. json\n")
-		# path = input("檔案路徑:\n")
-		jsonDICT = dict()
-		# if op == 0:
-		jsonDICT = isTxtFile(path)
-		# else:
-		# 	jsonDICT = isJsonFile(path)
-		jsonFileWriter( jsonDICT, "./{}.json".format(index))
-		index += 1
-	# '''
-	# for jsonDICT in jsonLIST:
-	# 	jsonFileWriter( jsonDICT, "./{}.json".format(index))
-	# 	index += 1
+	
+
+	# redealFile("./")
+	while True:
+		path = input("filepath:\n(輸入 exit()結束)\n")
+		if path == "exit()":
+			break
+		bulidJson(path)
+	
 
 
 
