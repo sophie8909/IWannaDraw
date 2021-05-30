@@ -41,4 +41,4 @@ if __name__ == '__main__':
 # 讀取 rawData 的資料
 # 將 CONTENT 斷句 後存成 [原檔名]_斷句.json（更改CONTENT的內容） 
 # 用 articut l2 段詞
-# 把 articut 出來結果存成 [原檔名]_artict.json（更改CONTENT的內容）
+# 把 articut 出來結果存成 [原檔名]_articut.json（更改CONTENT的內容）
