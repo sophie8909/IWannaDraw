@@ -1,6 +1,9 @@
 import json
 import ArticutAPI
-
+from pprint import pprint
+from filefunct import *
+from raw_text_to_data import *
+from trainClassify import *
 
 def articutLogIn(inforpath):
 	userDICT = json2DictReader(inforpath)
@@ -39,6 +42,12 @@ def text2Sentence(inputSTR):
 if __name__ == '__main__':
 
 # 讀取 rawData 的資料
+	curDataIndex = getIndexInFolder("./rawData")
+	curDataPath = "./rawData/" + str(28) + ".json"
+	dataDict = json2DictReader(curDataPath)
 # 將 CONTENT 斷句 後存成 [原檔名]_斷句.json（更改CONTENT的內容） 
+	dataContent = dataDict["CONTENT"]
+	dataSentence = text2Sentence(dataContent)
+
 # 用 articut l2 段詞
 # 把 articut 出來結果存成 [原檔名]_articut.json（更改CONTENT的內容）
