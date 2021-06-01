@@ -1,5 +1,9 @@
 import json
 import ArticutAPI
+from filefunct import *
+from pprint import pprint
+import os
+import re
 
 def wordCounter(inputSTR):
 	inputLIST = inputSTR.split("/")
@@ -26,7 +30,9 @@ def articutLogIn(inforpath):
 	return articut
 
 def articutProcessing(inputSTR, nlptool, levelop):
+	articut = articutLogIn("./account.info")
 	resultDICT = articut.parse(inputSTR, level=levelop)
+	pprint(resultDICT)
 	return resultDICT
 
 #將字串轉為「句子」列表的程式
@@ -37,11 +43,14 @@ def text2Sentence(inputSTR):
 		if inputSTR[i] == ",":
 			if  re.match( r"[0-9],[0-9]", inputSTR[i-1:i+2]):
 				inputSTR = inputSTR[0:i] + ' ' + inputSTR[i+1:] 
-	for i in ( "、", "，", "。", ",",";","；",'"',"'", '“'):
+	for i in ( "、", "，", "。", ",",";","；",'"',"'", '“','\n','·'):
 		inputSTR = inputSTR.replace( i, "<MyCuttingMark@CSIE112>")
 	for i in range(len(inputSTR)):
 		if inputSTR[i] == " ":
 			if re.match( r"[0-9] [0-9]", inputSTR[i-1:i+2]):
 				inputSTR = inputSTR[0:i] + ',' + inputSTR[i+1:]
 	inputLIST = inputSTR.split("<MyCuttingMark@CSIE112>")
-	return inputLIST[:-1]
+	for i in inputLIST:
+		if i == "":
+			inputLIST.remove("")
+	return inputLIST
