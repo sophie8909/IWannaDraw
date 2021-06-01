@@ -1,6 +1,23 @@
 import json
 import ArticutAPI
 
+def wordCounter(inputSTR):
+	inputLIST = inputSTR.split("/")
+
+	wordDICT = {}
+	for w in inputLIST:
+		if w in wordDICT:
+			pass
+		else:
+			wordDICT[w] = inputLIST.count(w)
+	
+	wordCountLIST = []
+	for i in wordDICT.items():
+		wordCountLIST.append(i)
+
+	wordCountLIST.sort(key = lambda c: c[1], reverse = True)
+	return wordCountLIST
+
 def articutLogIn(inforpath):
 	userDICT = json2DictReader(inforpath)
 	username = userDICT["username"]

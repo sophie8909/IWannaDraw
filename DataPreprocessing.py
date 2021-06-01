@@ -2,8 +2,10 @@ import json
 import ArticutAPI
 from pprint import pprint
 from filefunct import *
-from raw_text_to_data import *
-from trainClassify import *
+from rawTextToData import *
+from TrainClassify import *
+
+
 
 def articutLogIn(inforpath):
 	userDICT = json2DictReader(inforpath)
@@ -39,15 +41,27 @@ def text2Sentence(inputSTR):
 	inputLIST = inputSTR.split("<MyCuttingMark@CSIE112>")
 	return inputLIST[:-1]
 
+
+
+
 if __name__ == '__main__':
 
-# 讀取 rawData 的資料
-	curDataIndex = getIndexInFolder("./rawData")
-	curDataPath = "./rawData/" + str(28) + ".json"
-	dataDict = json2DictReader(curDataPath)
-# 將 CONTENT 斷句 後存成 [原檔名]_斷句.json（更改CONTENT的內容） 
-	dataContent = dataDict["CONTENT"]
-	dataSentence = text2Sentence(dataContent)
+	# 讀取 rawData 的資料
+	filepattern = r'(^[0-9]+)\.(json)$'
+	folderPath = "./rawData/"
+	for f in os.listdir( folderPath):
+		if re.match( filepattern, f):
+			curDataPath = folderPath + f
+			dataDict = json2DictReader(curDataPath)
+			# 將讀出 json 的 CONTENT 斷句存在 "SENTENCE"
+			# if "SENTENCE" not in dataDict:
+				dataDict["SENTENCE"] = text2Sentence(dataDict["CONTENT"])
+				jsonFileWriter( dataDict, curDataPath)
+			# # 用 articut lv2 斷詞
+			# if "WORDS" not in dataDict:
+			# 	dataDict["WORDS"] = 
+			# 	jsonFileWriter()
 
-# 用 articut l2 段詞
-# 把 articut 出來結果存成 [原檔名]_articut.json（更改CONTENT的內容）
+		
+	# 把 articut 出來結果存成 .json（更改CONTENT的內容）
+    

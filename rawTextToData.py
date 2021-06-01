@@ -37,7 +37,6 @@ def dealrawJson(jsonFilePath):
 		text = text[cutIndex+1:]
 	else:
 		publisher = jsonDICT["PUBLISHER"]
-
 	if "UPLOADTIME" not in jsonDICT:
 		cutIndex = text.find("  · \n")
 		uploadtime = text[:cutIndex]
@@ -45,7 +44,7 @@ def dealrawJson(jsonFilePath):
 		text = text[cutIndex+1:]
 	else:
 		uploadtime = jsonDICT["UPLOADTIME"]
-	print( "{}好了！！！！！！！".format(jsonFilePath))
+	# print( "{}好了！！！！！！！".format(jsonFilePath))
 	return {"TYPE": typestr, "PUBLISHER":publisher, "UPLOADTIME": uploadtime,"CONTENT":text}
 
 def bulidJson(path):
@@ -59,18 +58,27 @@ def bulidJson(path):
 		jsonFileWriter( jsonDICT, path)
 	return
 
+def cutJsonLIST(jsonFilePath):
+	with open(jsonFilePath, encoding = "utf-8") as f :
+		jsonLIST = f.read()
+	jsonLIST = json.loads(jsonLIST)
+	index = getIndexInFolder("./rawData")
+	for jsonDICT in jsonLIST:
+		jsonFileWriter( jsonDICT, "./rawData/{}.json".format(index))
+		index += 1
+	return
+
 if __name__ == '__main__':
 	
-
 	# redealFile("./rawData")
-	while True:
-		path = input("filepath:\n(輸入 exit()結束)\n")
-		if path == "exit()":
-			break
-		bulidJson(path)
-	
+	# while True:
+	# 	path = input("filepath:\n(輸入 exit()結束)\n")
+	# 	if path == "exit()":
+	# 		break
+	# 	bulidJson(path)
 
-
+	# 將爬蟲出來的新檔案切成原本的樣子
+	cutJsonLIST( "./new_rawData.json")
 
 
 
