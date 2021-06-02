@@ -28,10 +28,10 @@ if __name__ == '__main__':
 				dataDict["SENTENCE"] = text2Sentence(dataDict["CONTENT"])
 				jsonFileWriter( dataDict, curDataPath)
 			
-			# 用 articut lv2 斷詞
+			# 用 articut lv1 斷詞
 			# 下面那個註解到時候用好了要記得拿掉嘿 我還在等他給我一個月 我覺得我寫好了
 			#if "WORDS" not in dataDict:
-			cuttedDICT = articutProcessing(dataDict["CONTENT"],articut,"lv2")
+			cuttedDICT = articutProcessing(dataDict["CONTENT"],articut,"lv1")
 			dataDict["WORDS"] = wordCounter(cuttedDICT["result_segmentation"])
 			jsonFileWriter( dataDict, curDataPath)
 
