@@ -32,7 +32,6 @@ def articutLogIn(inforpath):
 def articutProcessing(inputSTR, nlptool, levelop):
 	articut = articutLogIn("./account.info")
 	resultDICT = articut.parse(inputSTR, level=levelop)
-	pprint(resultDICT)
 	return resultDICT
 
 #將字串轉為「句子」列表的程式
