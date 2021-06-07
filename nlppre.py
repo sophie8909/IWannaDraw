@@ -53,3 +53,9 @@ def text2Sentence(inputSTR):
 		if i == "":
 			inputLIST.remove("")
 	return inputLIST
+
+def articut2cleanWordList(wordList):
+	cleanWordList = []
+	for i in wordList:
+		cleanWordList.append( i[0])
+	return cleanWordList
