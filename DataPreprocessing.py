@@ -29,11 +29,10 @@ if __name__ == '__main__':
 				jsonFileWriter( dataDict, curDataPath)
 			
 			# 用 articut lv1 斷詞
-			# 下面那個註解到時候用好了要記得拿掉嘿 我還在等他給我一個月 我覺得我寫好了
-			#if "WORDS" not in dataDict:
-			cuttedDICT = articutProcessing(dataDict["CONTENT"],articut,"lv1")
-			dataDict["WORDS"] = wordCounter(cuttedDICT["result_segmentation"])
-			jsonFileWriter( dataDict, curDataPath)
+			if "WORDS" not in dataDict:
+				cuttedDICT = articutProcessing(dataDict["CONTENT"],articut,"lv1")
+				dataDict["WORDS"] = wordCounter(cuttedDICT["result_segmentation"])
+				jsonFileWriter( dataDict, curDataPath)
 
 		
 	# 把 articut 出來結果存成 .json（更改CONTENT的內容）
