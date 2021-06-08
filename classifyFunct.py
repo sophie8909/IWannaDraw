@@ -1,3 +1,5 @@
+from filefunct import *
+
 # 確認是否提及抽獎，使用關鍵字字典確認
 def classify_lv1(wordLIST) -> bool: 
     #  這邊的 keyword 必須讓所有抽獎文都過 lv1，但可能會混入其他東西
